@@ -25,24 +25,13 @@ describe('Análise das tarefas', () => {
         })
     })
 
-    it ('Deve recusar criação de tarefa no projeto de id 1 (6 tarefas incompletas)', () => {
-        const name = "Tarefa recusada"
-        const description = "Essa tarefa tentará ser adicionada em um projeto que já possui 5 tarefas incompletas, e não será adicionada"
-        const duration = 120
-        const isComplete = 0
-        const projectId = 1
-        return (task.createTask(projectRepo, taskRepo, name, description, duration, isComplete, projectId))
-            .then((data) => expect(data).toBe('Refused'));
-    })
-
-    it ('Deve aceitar criação de tarefa no projeto de id 2 (2 tarefas incompletas)', () => {
-        const name = "Tarefa confirmada"
+    it ('Não é possível adicionar uma tarefa a um projeto que possui mais do que 800 minutos restantes', () => {
+        const name = "Tarefa teste"
         const description = "Essa tarefa tentará ser adicionada em um projeto que possui 2 tarefas incompletas, e será adicionada"
         const duration = 120
         const isComplete = 0
         const projectId = 2
         return (task.createTask(projectRepo, taskRepo, name, description, duration, isComplete, projectId))
-            .then((data) => expect(data).toBe('Confirmed'));
+            .then((data) => expect(data).toBe('Refused'));
     })
-
 })

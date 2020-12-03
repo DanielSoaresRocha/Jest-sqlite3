@@ -9,3 +9,14 @@ Regras:
     Para indicar o percentual de tarefas completas de um projeto, deve-se fazer um arredondamento com uma casa decimal
     ☐ Tarefas com uma duração maior do que 240 minutos, contam o dobro do tempo para a contagem total de tempo restante do projeto
     ☐ Apenas tarefas incompletas contam no tempo restante da tarefa
+
+
+    Não é possível adicionar uma tarefa a um projeto que possui mais do que 800 minutos restantes
+
+    A tarefa prioritária de um projeto é aquela incompleta e com maior duração
+
+    Caso o sistema não tenha tarefas incompletas, o sistema não possui tarefas prioritárias
+
+4- A prioridade de um projeto é dada considerando o %tarefas_completadas (peso 2) e o tempo_restante_projeto (peso 4)
+
+5- Não é possível desabilitar um projeto que tenha tarefas incompletas -> sugestão (criar um campo status na tabela project)

@@ -25,5 +25,36 @@ module.exports = {
                 });
                 return total
             })
+    },
+    taskPriority: (projectRepo, projectId) => {
+        return projectRepo.getIncompletedTasks(projectId)
+            .then((data) => {
+                if(data.length){
+                    let taskPriority = {};
+                    taskPriority.duration = 0;
+                    data.forEach(task => {
+                        if(task.duration > taskPriority.duration){
+                            taskPriority = task;
+                        }
+                    })
+                    return taskPriority.name;
+                }
+                return 'Não possui prioridade'
+            })
+    },
+    disableProject: (projectRepo, projectId) => {
+        return projectRepo.getIncompletedTasks(projectId)
+            .then((data) => {
+                if(data.length)
+                    return 'Não é possível desabilitar'
+
+                let project = {
+                    id: projectId,
+                    disabled: 1
+                }
+                return projectRepo.update(project).then(() => {
+                    return 'Projeto desabilitado'
+                })
+            })
     }
 }

@@ -16,6 +16,7 @@ function main() {
     //resetDB(dao)
     createProject1(dao)
     createProject2(dao)
+    createProject3(dao)
     readDB(dao)
   });
 
@@ -62,23 +63,44 @@ function createProject1(dao) {//Project with more than 5 tasks incompletes
             projectId
           },
           {
-            name: 'Task 4',
-            description: 'Detalhamento da task 4',
-            duration: 10,
-            isComplete: 0,
-            projectId
-          },
-          {
             name: 'Task 5',
             description: 'Detalhamento da task 5',
-            duration: 100,
+            duration: 10,
             isComplete: 0,
             projectId
           },
           {
             name: 'Task 6',
             description: 'Detalhamento da task 6',
+            duration: 10,
+            isComplete: 0,
+            projectId
+          },
+          {
+            name: 'Task 7',
+            description: 'Detalhamento da task 7',
+            duration: 100,
+            isComplete: 0,
+            projectId
+          },
+          {
+            name: 'Task 7',
+            description: 'Detalhamento da task 7',
             duration: 50,
+            isComplete: 0,
+            projectId
+          },
+          {
+            name: 'Task 8',
+            description: 'Detalhamento da task 8',
+            duration: 400,
+            isComplete: 0,
+            projectId
+          },
+          {
+            name: 'Task 9',
+            description: 'Detalhamento da task 9',
+            duration: 500,
             isComplete: 0,
             projectId
           }
@@ -128,7 +150,7 @@ function createProject2(dao) { //Project with 33,3% completed tasks
         {
           name: 'Task 7',
           description: 'Detalhamento da task 7',
-          duration: 100,
+          duration: 500,
           isComplete: 1,
           projectId
         },
@@ -176,6 +198,91 @@ function createProject2(dao) { //Project with 33,3% completed tasks
       console.log('Error: ')
       console.log(JSON.stringify(err))
     })
+}
+
+function createProject3(dao) {//Project with more than 5 tasks incompletes
+    const projectRepo = new ProjectRepository(dao)
+    const taskRepo = new TaskRepository(dao)
+    let projectId
+  
+    projectRepo.createTable()
+      .then(() => taskRepo.createTable())
+      .then(() => projectRepo.create("Projeto 3"))
+      .then((data) => {
+        projectId = data.id
+        const tasks = [
+          {
+            name: 'Task 1',
+            description: 'Detalhamento da task 1',
+            duration: 60,
+            isComplete: 1,
+            projectId
+          },
+          {
+            name: 'Task 2',
+            description: 'Detalhamento da task 2',
+            duration: 120,
+            isComplete: 1,
+            projectId
+          },
+          {
+            name: 'Task 3',
+            description: 'Detalhamento da task 3',
+            duration: 300,
+            isComplete: 1,
+            projectId
+          },
+          {
+            name: 'Task 4',
+            description: 'Detalhamento da task 4',
+            duration: 10,
+            isComplete: 1,
+            projectId
+          },
+          {
+            name: 'Task 5',
+            description: 'Detalhamento da task 5',
+            duration: 100,
+            isComplete: 1,
+            projectId
+          },
+          {
+            name: 'Task 6',
+            description: 'Detalhamento da task 6',
+            duration: 50,
+            isComplete: 1,
+            projectId
+          }
+        ]
+        return Promise.all(tasks.map((task) => {
+          const { name, description, duration, isComplete, projectId } = task
+          return taskRepo.create(name, description, duration, isComplete, projectId)
+        }))
+      })
+      .then(() => projectRepo.getById(projectId))
+      .then((project) => {
+        console.log(`\nRetreived project from database`)
+        console.log(`project id = ${project.id}`)
+        console.log(`project name = ${project.name}`)
+        return projectRepo.getTasks(project.id)
+      })
+      .then((tasks) => {
+        console.log('\nRetrieved project tasks from database')
+        return new Promise((resolve, reject) => {
+          tasks.forEach((task) => {
+            console.log(`task id = ${task.id}`)
+            console.log(`task name = ${task.name}`)
+            console.log(`task description = ${task.description}`)
+            console.log(`task duration = ${task.duration}`)
+            console.log(`task isComplete = ${task.isComplete}`)
+            console.log(`task projectId = ${task.projectId}`)
+          })
+        })
+      })
+      .catch((err) => {
+        console.log('Error: ')
+        console.log(JSON.stringify(err))
+      })
 }
 
 function readDB(dao) {

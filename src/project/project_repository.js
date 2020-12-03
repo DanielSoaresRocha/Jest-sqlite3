@@ -9,6 +9,7 @@ class ProjectRepository {
       const sql = `
       CREATE TABLE IF NOT EXISTS projects (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        disabled INTEGER DEFAULT 0,
         name TEXT)`
       return this.dao.run(sql)
     }
@@ -26,10 +27,11 @@ class ProjectRepository {
     }
 
     update(project) {
-        const { id, name } = project
+        const { id, disabled } = project
+        console.log(id +" "+ disabled)
         return this.dao.run(
-          `UPDATE projects SET name = ? WHERE id = ?`,
-          [name, id]
+          `UPDATE projects SET disabled = ? WHERE id = ?`,
+          [disabled, id]
         )
     }
 

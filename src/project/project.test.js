@@ -25,17 +25,23 @@ describe('Análise dos projetos', () => {
         })
     })
 
-    it ('Deve retornar 33,3% como %completude no projeto (id=2) com 3 tarefas, sendo 1 completada', () => {
-        const projectId = 2
-        return (project.completedTasks(projectRepo,taskRepo,projectId))
-                .then((data) => expect(data).toBe(33.3));
+    it ('Deve retornar task 9 para o projeto de id 2', () => {
+        const projectId = 2;
+        return (project.taskPriority(projectRepo, projectId)).then((data) => expect(data).toBe('Task 9'))
     })
 
-    it ('Deve retornar 720 no tempo restante do projeto (id=2)', () => {
-        const projectId = 2
-        return (project.remainingTime(projectRepo,taskRepo,projectId))
-                .then((data) => expect(data).toBe(720));
+    it ('Deve retornar Não possui prioridade para o projeto de id 1', () => {
+        const projectId = 3;
+        return (project.taskPriority(projectRepo, projectId)).then((data) => expect(data).toBe('Não possui prioridade'))
     })
 
-   
+    it ('Não é possível desabilitar o projeto de id 1, que tem tarefas incompletas', () => {
+        const projectId = 1;
+        return (project.disableProject(projectRepo, projectId)).then((data) => expect(data).toBe('Não é possível desabilitar'))
+    })
+
+    it ('É possível desabilitar o projeto de id 3, que possui todas as tarefas completas', () => {
+        const projectId = 3;
+        return (project.disableProject(projectRepo, projectId)).then((data) => expect(data).toBe('Projeto desabilitado'))
+    })
 })
