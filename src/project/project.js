@@ -1,9 +1,22 @@
 const { resolve } = require("bluebird");
 
 module.exports = {
-    completedTasks: (projectRepo, taskRepo, projectId) => {
+    priorityProject: (projectRepo, taskRepo, projectId) => {
         let completed
         let incompleted
+        let percentual;
+        let tempoRestante;
+        let remainingTime = (projectRepo,taskRepo,projectId) => {
+            return projectRepo.getRemainingTime(projectId)
+            .then((data) => {
+                let total=0
+                data.forEach(row => {
+                    total += row.duration>240 ? row.duration*2 : row.duration
+                });
+                return total
+            })
+        }
+
         return projectRepo.getCompletedTasks(projectId)
             .then((data) => {
                 completed=data.length
@@ -13,17 +26,13 @@ module.exports = {
             })
             .then((data) => {
                 incompleted=data.length
-                return parseFloat((completed*100/(completed+incompleted)).toFixed(1))
-            })
-    },
-    remainingTime: (projectRepo,taskRepo,projectId) => {
-        return projectRepo.getRemainingTime(projectId)
-            .then((data) => {
-                let total=0
-                data.forEach(row => {
-                    total += row.duration>240 ? row.duration*2 : row.duration
-                });
-                return total
+                percentual = parseFloat((completed*100/(completed+incompleted)).toFixed(1))
+
+                return remainingTime(projectRepo,taskRepo,projectId).then((data) =>{
+                    tempoRestante = data;
+                    
+                    return parseFloat(((percentual*2 + tempoRestante*4)/6).toFixed(1))
+                })
             })
     },
     taskPriority: (projectRepo, projectId) => {

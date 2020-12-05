@@ -14,9 +14,9 @@ function main() {
 
   dao.db.serialize(() => {
     //resetDB(dao)
-    createProject1(dao)
-    createProject2(dao)
-    createProject3(dao)
+    //createProject1(dao)
+    //createProject2(dao)
+    //createProject3(dao)
     readDB(dao)
   });
 

@@ -28,7 +28,6 @@ class ProjectRepository {
 
     update(project) {
         const { id, disabled } = project
-        console.log(id +" "+ disabled)
         return this.dao.run(
           `UPDATE projects SET disabled = ? WHERE id = ?`,
           [disabled, id]

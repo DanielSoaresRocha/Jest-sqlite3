@@ -44,4 +44,9 @@ describe('Análise dos projetos', () => {
         const projectId = 3;
         return (project.disableProject(projectRepo, projectId)).then((data) => expect(data).toBe('Projeto desabilitado'))
     })
+
+    it ('Verificar a prioridade de um projeto', () => {
+        const projectId = 2;
+        return (project.priorityProject(projectRepo, taskRepo, projectId)).then((data) => expect(data).toBe(804.8))
+    })
 })
